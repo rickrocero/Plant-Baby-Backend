@@ -1,0 +1,1 @@
+// Drinks schema (image, name, price, categories)
