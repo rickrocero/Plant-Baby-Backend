@@ -1,5 +1,5 @@
 // BCrypt needed for User Data 
-// Create User schema (first name, last name, email, password)
+// Create User schema (first name, last name, email, password, user's cart)
 
 const mongoose = require('./mongoose');
 const { Schema } = mongoose;
