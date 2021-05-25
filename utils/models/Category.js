@@ -1,19 +1,27 @@
 // Categories would include "Pet friendly" "Low Maintenance" "Exotic" "Large" "Medium""Small"
 // Categories schema
+const { Model } = require('sequelize');
+const sequelize = require('../config/connection');
 
 
-const mongoose = require('./mongoose');
 
-const { Schema } = mongoose
 
-const categorySchema = new Schema({
+
+Category.init(
+    {
     name: {
         type: String,
         required: true,
         trim: true
     }
-});
+}),
 
-const Category = mongoose.model('Category', categorySchema);
+{
+    sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'Category',
+    };
 
 module.exports = Category;

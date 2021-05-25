@@ -1,12 +1,12 @@
 // BCrypt needed for User Data 
 // Create User schema (first name, last name, email, password, user's cart)
-
-const mongoose = require('./mongoose');
-const { Schema } = mongoose;
+const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
+const sequelize = require('../config/connection');
 const cart = require('cart');
 
-const userSchema = new Schema({
+User.init(
+    {
     firstName: {
         type: String,
         required: true,
@@ -25,24 +25,31 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minLength:8
+        minLength: 8
     },
     cart: [cart.Schema]
-});
+}),
 
-userSchema.pre('save', async function(next) {
-    if (this.isNew || this.isModified('password')) {
-        const encrypted = 15;
-        this.password = await bcrypt.hash(this.password, encrypted);
-    }
+{
+hooks: {
+    beforeCreate: async (newUserData) => {
+        newUserData.password = await bcrypt.hash(newUserData.password, 15);
+        return newUserData;
+    },
+        beforeUpdate: async (updatedUserData) => {
+            updatedUserData.password = await bcrypt.hash(updatedUserData.password, 15);
+            return updatedUserData;
+        }
+}},
 
-    next();
-});
-
-userSchema.methods.isCorrectPassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
+{
+sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'User',
 };
 
-const User = mongoose.model('User, userSchema');
+
 
 module.exports = User;

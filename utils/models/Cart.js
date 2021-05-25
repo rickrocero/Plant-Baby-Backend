@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const { Model } = require('sequelize');
+const sequelize = require('../config/connection');
 
-const { Schema } = mongoose;
-
-const categorySchema = new Schema({
+Cart.init(
+{
     purchaseDate: {
         type: Date,
         default: Date.now
@@ -11,8 +11,14 @@ const categorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Plant'
     }
-});
+}),
 
-const Cart = mongoose.model('Cart', categorySchema);
+{
+sequelize,
+timestamps: false,
+freezeTableName: true,
+underscored: true,
+modelName: 'Cart',
+};
 
 module.exports = Cart;

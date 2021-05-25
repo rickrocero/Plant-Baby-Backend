@@ -1,10 +1,11 @@
 // Drinks schema (image, name, price, categories)
 
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 
 const { Schema };
 
-const plantSchema = new Schema({
+Plant.init(
+    {
     name: {
         type: String,
         required: true,
@@ -22,8 +23,14 @@ const plantSchema = new Schema({
         ref: 'Category',
         required: true
     }
-})
+}),
 
-const Drink = mongoose.model('Plant', plantSchema);
+{
+sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'Plant',
+};
 
 module.exports = Plant;
