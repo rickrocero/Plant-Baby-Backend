@@ -1,29 +1,39 @@
-const express = require("express");
-const stripe = require('stripe')
-const logger = require("morgan");
-const mongoose = require("mongoose");
-app.use(express.static('.'));
+const express = require('express');
+const session = require('express-session');
+const routes = require('./controllers');
+const path = require('path');
 
+require("dotenv").config();
 
-const PORT = process.env.PORT || 3000;
-
-const User = require("./models.User.js");
+const sequelize = require('./config/connection');
+const { truncate } = require('./models/User');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
 
-app.use(logger("dev"));
+const sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2
+    },
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
 
-app.use(express.urlencoded({ extended: true }));
+app.use(session(sess));
+
 app.use(express.json());
-
-app.use(express.static("public"));
-
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/plantbaby", { useNewUrlParser: true });
-
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.engine('handlebars', exphbs({ defaultLayout: "main" }));
+app.set('view engine', 'handlebars');
 
 
+app.use(routes);
 
-app.listen(PORT, () => {
-    console.log(`App running on port ${PORT}!`);
+sequelize.sync({ force: false }).then(() => {
+    app.listen(PORT, () => console.log(`Now listening on http://localhost:${PORT}`));
 });
