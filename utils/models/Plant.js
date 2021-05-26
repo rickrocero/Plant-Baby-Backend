@@ -1,36 +1,61 @@
-// Drinks schema (image, name, price, categories)
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
-const mongoose = require('mongoose');
-
-const { Schema };
+class Plant extends Model {}
 
 Plant.init(
-    {
-    name: {
-        type: String,
-        required: true,
-        trim: true
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     image: {
-        type: String,
+        type: DataTypes.STRING,
+        allowNull: false
     },
     price: {
-        type: Number,
-        required: true,
+        type: DataTypes.FLOAT,
+        allowNull: false
     },
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
-    }
-}),
-
-{
-sequelize,
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    is_indoor: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    },
+    for_sale: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    // Store a reference of the `id` of inventory this plant belongs to
+    inventory_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'inventory',
+          key: 'id',
+        },
+    },
+  },
+  {
+    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'Plant',
-};
+    modelName: 'plant'
+  }
+);
 
 module.exports = Plant;
