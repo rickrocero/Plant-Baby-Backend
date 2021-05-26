@@ -1,55 +1,60 @@
-// BCrypt needed for User Data 
-// Create User schema (first name, last name, email, password, user's cart)
 const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
-const sequelize = require('../config/connection');
-const cart = require('cart');
+const sequelize = require('../config/connection');  // db connection
+const bcrypt = require('bcrypt');                   // password hashing
+
+class User extends Model {}
 
 User.init(
-    {
-    firstName: {
-        type: String,
-        required: true,
-        trim: true
+  {
+    id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true,
+        },
     },
     password: {
-        type: String,
-        required: true,
-        minLength: 8
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [8],
+        },
     },
-    cart: [cart.Schema]
-}),
-
-{
-hooks: {
-    beforeCreate: async (newUserData) => {
-        newUserData.password = await bcrypt.hash(newUserData.password, 15);
-        return newUserData;
-    },
+  },
+  {
+    sequelize,
+    hooks: {
+        // hash a new user's password on creation
+        beforeCreate: async (newUserData) => {
+            newUserData.password = await bcrypt.hash(newUserData.password, 15);
+            return newUserData;
+        },
+        // hash a user's password on update
         beforeUpdate: async (updatedUserData) => {
             updatedUserData.password = await bcrypt.hash(updatedUserData.password, 15);
             return updatedUserData;
         }
-}},
-
-{
-sequelize,
+    },   
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'User',
-};
-
-
+    modelName: 'user',
+  }
+);
 
 module.exports = User;
