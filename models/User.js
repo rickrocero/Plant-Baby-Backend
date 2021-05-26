@@ -5,8 +5,17 @@ const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 const cart = require('cart');
 
+
+class User extends Model {}
+
 User.init(
     {
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
     firstName: {
         type: String,
         required: true,
