@@ -13,11 +13,7 @@ const sequelize = require('./config/connection');
 
 
 const app = express();
-<<<<<<< HEAD
-const PORT = process.env.PORT || 3000
-=======
 const PORT = 3001;
->>>>>>> develop
 
 // const sess = {
 //     secret: process.env.SECRET,
