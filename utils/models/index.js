@@ -2,30 +2,30 @@ const User = require('./User');
 const Address = require('./Address');
 const Inventory = require('./Inventory');
 const Plant = require('./Plant');
-const Tag = require ('./Tag');
+const Tag = require('./Tag');
 const PlantTag = require('./PlantTag');
 
 User.hasOne(Address, {
-   foreignKey: 'user_id',
+  foreignKey: 'user_id',
 });
 
 Address.belongsTo(User, {
-    foreignKey: 'user_id'
+  foreignKey: 'user_id'
 });
 
 User.hasOne(Inventory, {
-    foreignKey: 'user_id'
+  foreignKey: 'user_id'
 });
 
 Inventory.belongsTo(User, {
-    foreignKey: 'user_id'
+  foreignKey: 'user_id'
 });
 
 Plant.belongsTo(Inventory, {
   foreignKey: 'inventory_id',
   onDelete: 'CASCADE',
 });
-  
+
 Inventory.hasMany(Plant, {
   foreignKey: 'inventory_id',
 });
@@ -41,10 +41,10 @@ Tag.belongsToMany(Plant, {
 });
 
 module.exports = {
-    User, 
-    Address,
-    Inventory,
-    Plant,
-    Tag,
-    PlantTag,
+  User,
+  Address,
+  Inventory,
+  Plant,
+  Tag,
+  PlantTag,
 };
