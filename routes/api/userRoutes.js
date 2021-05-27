@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const userData = await User.findByPk(req.params.id, {
-            include: [{ model: Trip }, { model: GearItem }],
+            include: [{ model: Cart }, { model: Plant }],
         });
 
         if (!userData) {
