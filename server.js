@@ -10,6 +10,7 @@ const { User } = require('./models');
 // const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
+const PORT = 3001;
 
 // const sess = {
 //     secret: process.env.SECRET,
