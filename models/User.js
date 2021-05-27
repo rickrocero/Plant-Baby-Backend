@@ -5,12 +5,12 @@ const bcrypt = require('bcrypt');                   // password hashing
 class User extends Model { }
 
 User.init(
-    {
-        id: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
         },
         first_name: {
             type: DataTypes.STRING,
