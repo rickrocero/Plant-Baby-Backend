@@ -13,7 +13,7 @@ const sequelize = require('./config/connection');
 
 
 const app = express();
-// const PORT = 3001;
+const PORT = 3001;
 
 // const sess = {
 //     secret: process.env.SECRET,
@@ -39,3 +39,5 @@ app.use(routes);
 sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on http://localhost:${PORT}`));
 });
+
+
