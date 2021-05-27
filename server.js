@@ -3,31 +3,28 @@ const session = require('express-session');
 const routes = require('./routes');
 const path = require('path');
 
-
-
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 3001;
 
 require("dotenv").config();
 
 const sequelize = require('./config/connection');
-
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
-// const PORT = 3001;
 
-// const sess = {
-//     secret: process.env.SECRET,
-//     cookie: {
-//         maxAge: 1000 * 60 * 60 * 2
-//     },
-//     resave: false,
-//     saveUninitialized: true,
-//     store: new SequelizeStore({
-//         db: sequelize
-//     })
-// };
+const sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2
+    },
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
 
-
+app.use(session(sess))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
