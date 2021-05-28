@@ -3,7 +3,9 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const { Plant, PlantTag, Tag } = require("../../models");
 
-router.get('/search:img', (req, res) => {
+
+//not fully working
+router.get('/search', (req, res) => {
     const { img } = req.params;
     const data = {
         api_key: "7Q66uWKTVfiV3Aywgf0wy4Aq6q5ve8J0iDudbHyuDmnLbLhFVi",
