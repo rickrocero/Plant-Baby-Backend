@@ -3,8 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Plant, Cart, User } = require('../../models')
 
-
-router.get('/', async (req, res) => {
+//working route
+router.get('/api/plant', async (req, res) => {
     try {
         const allPlants = await Plant.findAll();
 
@@ -14,11 +14,14 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+//working route
+router.get('/api/plant/:id', async (req, res) => {
     try {
-        const plantData = await Plant.findByPk(req.params.id, {
-            include: [{ model: Cart }, { model: User }],
-        });
+        const plantData = await Plant.findByPk(req.params.id, 
+        //     {
+        //     include: [{ model: Cart }, { model: User }],
+        // }
+        );
 
         if (!plantData) {
             res.status(404).json({ message: 'No plant found with that id!' });
@@ -31,25 +34,59 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+// router.post('/plant', async (req, res) => {
 
-    console.log("plant post *******", req.body);
-    console.log("plant session *******", req.session);
+//     console.log("plant post *******", req.body);
+//     console.log("plant session *******", req.session);
 
-    try {
-        const newPlant = await Plant.create({
-            name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            user_id: req.session.user.id
-        });
+//     try {
+//         const newPlant = await Plant.create({
+//             type: req.body.type,
+//             price: req.body.price,
+//             description: req.body.description,
+//             quantity: req.body.quantity,
+//             is_indoor: req.body.is_indoor,
+//             for_sale: req.body.for_sale,
+//             inventory_id: req.body.inventory_id
+//         });
+//         res.status(200).json(newPlant);
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// })
+
+//not fully working route
+router.post("/api/plant", (req, res) => {
+    Plant.create({
+        type: req.body.type,
+        price: req.body.price,
+        description: req.body.description,
+        quantity: req.body.quantity,
+        is_indoor: req.body.is_indoor,
+        for_sale: req.body.for_sale,
+        inventory_id: req.body.inventory_id
+    })
+      .then((newPlant) => {
+        req.session.plant = {
+            type: newPlant.type,
+            price: newPlant.price,
+            description: newPlant.description,
+            quantity: newPlant.quantity,
+            is_indoor: newPlant.is_indoor,
+            for_sale: newPlant.for_sale,
+            inventory_id: newPlant.inventory_id
+        };
+  
         res.status(200).json(newPlant);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-})
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: "an error occured", err });
+      });
+  });
 
-router.delete('/:id', async (req, res) => {
+
+router.delete('/api/plant:id', async (req, res) => {
     console.log(req.body)
     try {
         const removedItem = await Plant.destroy({
@@ -68,8 +105,8 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-
-router.put('/:id', async (req, res) => {
+//not fully working route
+router.put('/api/plant/:id', async (req, res) => {
     console.log('route reached!');
 
     console.log('reqbody:', req.body)
@@ -77,7 +114,7 @@ router.put('/:id', async (req, res) => {
     console.log(tripID);
 
     try {
-        const cartToUpdate = await Trip.findByPk(cartID)
+        const cartToUpdate = await Cart.findByPk(cartID)
 
         cartToUpdate.addPlant(req.params.id)
         cartToUpdate.save();
@@ -88,6 +125,7 @@ router.put('/:id', async (req, res) => {
 
 })
 
+//not fully working route
 router.put('/update/:id', async (req, res) => {
     console.log('route reached :)');
 

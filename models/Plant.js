@@ -15,10 +15,10 @@ Plant.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    image: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+    // image: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true
+    // },
     price: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
