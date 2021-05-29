@@ -64,6 +64,7 @@ router.get("/api/user/:id", async (req, res) => {
 
 //working route
 router.post("/api/signup", (req, res) => {
+  console.log(req.body)
   User.create({
     first_name: req.body.first_name,
     last_name: req.body.last_name,

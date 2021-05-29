@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const routes = require('./routes');
 const path = require('path');
+const cors = require("cors")
 
 const PORT = process.env.PORT || 3001;
 
@@ -29,7 +30,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+//LOCAL
+app.use(cors());
 
 app.use(routes);
 
