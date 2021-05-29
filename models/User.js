@@ -5,39 +5,39 @@ const bcrypt = require('bcrypt');                   // password hashing
 class User extends Model { }
 
 User.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        first_name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        last_name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true,
-            },
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [8],
-            },
+  {
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true,
         },
     },
-    {
-        sequelize,
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [8],
+        },
+    },
+  },
+  {
+    sequelize,
         hooks: {
             // hash a new user's password on creation
             beforeCreate: async (newUserData) => {
@@ -54,7 +54,7 @@ User.init(
         freezeTableName: true,
         underscored: true,
         modelName: 'user',
-    }
+  }
 );
 
 module.exports = User;
