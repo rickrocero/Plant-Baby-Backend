@@ -6,6 +6,7 @@ const { Plant, PlantTag, Tag } = require("../../models");
 
 //not fully working
 router.get('/search', (req, res) => {
+//image from the req.body
     const { img } = req.params;
     const data = {
         api_key: "7Q66uWKTVfiV3Aywgf0wy4Aq6q5ve8J0iDudbHyuDmnLbLhFVi",
@@ -26,7 +27,7 @@ router.get('/search', (req, res) => {
     }).catch(error => {
         console.error('Error: ', error)
     })
-    
+    //render and populate plant cards
     
 })
 
