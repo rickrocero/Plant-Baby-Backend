@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, DATEONLY, DATE } = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Order extends Model {}
@@ -14,7 +14,7 @@ Order.init(
     order_date: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-      defaultValue: Date.now()
+      defaultValue: DATE.now
     },
     tracking_number: {
       type: DataTypes.STRING,
