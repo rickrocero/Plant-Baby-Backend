@@ -11,11 +11,11 @@ Order.init(
       primaryKey: true,
       autoIncrement: true
     },
-    order_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      defaultValue: Date.now()
-    },
+    // order_date: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   defaultValue: Date.now()
+    // },
     tracking_number: {
       type: DataTypes.STRING,
       allowNull: false
