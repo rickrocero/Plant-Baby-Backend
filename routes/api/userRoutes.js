@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken')
+const tokenAuth = require('../../middleware/tokenAuth')
 const { Plant, Cart, User } = require("../../models");
 
 //working route
@@ -16,51 +18,49 @@ router.get("/api/user", async (req, res) => {
 
 //working route
 router.post('/api/login', (req, res) => {
-    try{
         User.findOne({
           where: {
             email: req.body.email,
           },
-        }).then((foundUser) => {
-          if (!foundUser) {
-            req.session.destroy();
-            return res.status(401).send("Login Failed");
+        }).then(user => {
+          if (!user) {
+            return res.status(401).json({ message: "Login Failed" });
           }
-          if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-            req.session.user = {
-              email: foundUser.email,
-              id: foundUser.dataValues.id,
-            };
-            return res.json(foundUser);
+          else if (!bcrypt.compareSync(req.body.password, user.password)) {
+            console.log(req.body.password);
+            console.log("passwords dont match")
+            return res.status(403).json({ message: "auth failed" })
           } else {
-            return res.status(400).send("Login Failed");
+            const token = jwt.sign({
+              first_name:user.first_name,
+              last_name:user.last_name,
+              email:user.email,
+              id:user.id
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn:'2h'
+            })
+            res.json({token, user})
           }
         });
-      }
-      catch (err) {
-          
-      }
 })
 
-//working route
-router.get("/api/user/:id", async (req, res) => {
-  try {
-    const userData = await User.findByPk(req.params.id, 
-    //   {
-    //   include: [{ model: Cart }, { model: Plant }],
-    // }
-    );
-
-    if (!userData) {
-      res.status(404).json({ message: "No user found with that id!" });
-      return;
-    }
-
-    res.status(200).json(userData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+// tokenAuth
+router.get("/api/profile",tokenAuth,(req,res)=>{
+  User.findOne({
+      where:{
+          id:req.user.id
+      },
+      // include: [{ model: Cart }, { model: Plant }],
+  }).then(userData=>{
+    console.log(res)
+      return res.json(userData)
+  }).catch(err=>{
+      console.log(err);
+      return res.status(500).json({message:"error",err})
+  })
+})
 
 //working route
 router.post("/api/signup", (req, res) => {
@@ -72,15 +72,18 @@ router.post("/api/signup", (req, res) => {
     password: req.body.password,
   })
     .then((newUser) => {
-      req.session.user = {
+      const token = jwt.sign({
         first_name: newUser.first_name,
         last_name: newUser.last_name,
         email: newUser.email,
         password: newUser.password,
         id: newUser.id,
-      };
-
-      res.status(200).json(newUser);
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn:'2h'
+      });
+      res.json({token, user:newUser});
     })
     .catch((err) => {
       console.log(err);
