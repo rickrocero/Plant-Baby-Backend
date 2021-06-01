@@ -3,8 +3,7 @@ const userRoutes = require('./userRoutes.js');
 const cartRoutes = require('./cartRoutes.js');
 const plantRoutes = require('./plantRoutes.js');
 const plantSearchRoutes = require('./plantSearchRoutes.js');
-const inventoryRoutes = require('./inventoryRoutes.js');
-const orderRoutes = require('./orderRoutes.js');
+const inventoryRoutes = require('./inventoryRoutes')
 
 router.use('./user', userRoutes);
 router.use('./cart', cartRoutes);

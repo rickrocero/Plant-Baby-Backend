@@ -20,7 +20,7 @@ Plant.init(
     //     allowNull: true
     // },
     price: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL(10,2),
         allowNull: false
     },
     description: {
@@ -42,7 +42,7 @@ Plant.init(
     // Store a reference of the `id` of inventory this plant belongs to
     inventory_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'inventory',
           key: 'id',

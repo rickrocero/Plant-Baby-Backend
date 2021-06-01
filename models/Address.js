@@ -27,7 +27,7 @@ Address.init(
         type: DataTypes.STRING,
         allowNull: false,
     },
-    zip_code: {
+    zip: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },

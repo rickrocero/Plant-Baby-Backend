@@ -1,10 +1,12 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
+class Cart extends Model {}
+
 Cart.init(
 {
     purchaseDate: {
-        type: Date,
+        type: DataTypes.DATE,
         default: Date.now
     },
     plants: {
@@ -12,7 +14,6 @@ Cart.init(
         ref: 'Plant'
     }
 }),
-
 {
 sequelize,
 timestamps: false,

@@ -3,6 +3,9 @@ const session = require('express-session');
 const routes = require('./routes');
 const cors = require('cors');
 const path = require('path');
+const cors = require("cors")
+const stripe = require("stripe")("sk_test_51IsMthAJVOAaFk842SSuVfJMKc4aodNbzrQ71oapQB8xO0X6TUs4wceH7ND2LcAEILcRd71SyARteLE35rs3Ub500056QbXxYD");
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -32,8 +35,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 
+//LOCAL
+app.use(cors());
 
 app.use(routes);
+
+const calculateOrderAmount = items => {
+    // Replace this constant with a calculation of the order's amount
+    // Calculate the order total on the server to prevent
+    // people from directly manipulating the amount on the client
+    return 1400;
+  };
+app.post("/create-payment-intent", async (req, res) => {
+    const { items } = req.body;
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: calculateOrderAmount(items),
+      currency: "usd"
+    });
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    });
+  });
 
 sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on http://localhost:${PORT}`));

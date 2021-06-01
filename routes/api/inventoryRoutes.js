@@ -1,16 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const tokenAuth = require('../../middleware/tokenAuth')
 const { Plant, Cart, User, Inventory } = require("../../models");
 
+router.post('/api/inventory', tokenAuth, (req, res) => {
+  Inventory.create({
+    name: req.body.name,
+    user_id: req.user.id
+  }).then(inventory => {
+    res.json(inventory)
+  }).catch(err => {
+    res.status(500).json({ message: 'error', err})
+  })
+})
+
 //not fully working
-router.get("/api/inventory", async (req, res) => {
-    try {
-      const allInventory = await Inventory.findAll();
-      res.status(200).json(allInventory);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+router.get("/api/inventory/:id", async (req, res) => {
+  Inventory.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [Plant]
+  }).then()
   });
 
 //not fully working
@@ -20,15 +32,11 @@ router.post('/new', (req, res) => {
         user_id: req.body.user_id
     })
     .then((newInventory) =>{
-        req.session.inventory = {
-            name: newInventory.name,
-            user_id: newInventory.user_id
-        }
-        res.status(200).json(newInventory)
+       res.json(newInventory)
     })
 .catch((err) => {
     console.log(err)
-    res.status(500).json({ message: 'error' })
+    res.status(500).json({ message: 'error',err })
 })
 })
 

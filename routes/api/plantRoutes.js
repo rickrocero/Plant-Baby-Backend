@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const tokenAuth = require('../../middleware/tokenAuth')
 const { Plant, Cart, User } = require('../../models')
 
 //working route
-router.get('/api/plant', async (req, res) => {
-    try {
-        const allPlants = await Plant.findAll();
-
-        res.status(200).json(allPlants);
-    } catch (err) {
-        res.status(500).json(err);
-    }
+router.get('/api/plant', (req, res) => {
+  Plant.findAll().then(plants=> {
+      res.json(plants)
+  }).catch(err=> {
+      res.status(500).json({ message:"error", err })
+  })
 })
 
 //working route
@@ -34,28 +33,8 @@ router.get('/api/plant/:id', async (req, res) => {
     }
 });
 
-// router.post('/plant', async (req, res) => {
-
-//     console.log("plant post *******", req.body);
-//     console.log("plant session *******", req.session);
-
-//     try {
-//         const newPlant = await Plant.create({
-//             type: req.body.type,
-//             price: req.body.price,
-//             description: req.body.description,
-//             quantity: req.body.quantity,
-//             is_indoor: req.body.is_indoor,
-//             for_sale: req.body.for_sale,
-//             inventory_id: req.body.inventory_id
-//         });
-//         res.status(200).json(newPlant);
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// })
-
 //not fully working route
+//foreign key restraint
 router.post("/api/plant", (req, res) => {
     Plant.create({
         type: req.body.type,
@@ -66,18 +45,8 @@ router.post("/api/plant", (req, res) => {
         for_sale: req.body.for_sale,
         inventory_id: req.body.inventory_id
     })
-      .then((newPlant) => {
-        req.session.plant = {
-            type: newPlant.type,
-            price: newPlant.price,
-            description: newPlant.description,
-            quantity: newPlant.quantity,
-            is_indoor: newPlant.is_indoor,
-            for_sale: newPlant.for_sale,
-            inventory_id: newPlant.inventory_id
-        };
-  
-        res.status(200).json(newPlant);
+      .then(plant => {
+        res.json(plant);
       })
       .catch((err) => {
         console.log(err);
@@ -86,23 +55,27 @@ router.post("/api/plant", (req, res) => {
   });
 
 
-router.delete('/api/plant:id', async (req, res) => {
+router.delete('/api/plant:id', (req, res) => {
     console.log(req.body)
-    try {
-        const removedItem = await Plant.destroy({
-            where: {
-                id: req.params.id
-            }
-        })
-        res.status(200).json(removedItem)
-
-        if (!removedItem) {
-            res.status(404).json({ message: 'plant not found' })
-
+    Plant.findOne({
+        where:{
+            id:req.params.id
         }
-    } catch (err) {
-        res.status(500).json(err);
-    }
+    }).then(plant=> {
+        if(plant.UserId!=req.user.id){
+            return res.status(403).json({message:'not your plant'})
+        }
+        Plant.destroy({
+            where:{
+                id:req.params.id
+            }
+        }).then(delPlant => {
+            res.json(delPlant)
+        }).catch(err=>{
+            res.status(500).json({message:'error',err})
+        })
+    })
+ 
 })
 
 //not fully working route
