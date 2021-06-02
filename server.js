@@ -3,7 +3,6 @@ const session = require('express-session');
 const routes = require('./routes');
 const cors = require('cors');
 const path = require('path');
-const cors = require("cors")
 const stripe = require("stripe")("sk_test_51IsMthAJVOAaFk842SSuVfJMKc4aodNbzrQ71oapQB8xO0X6TUs4wceH7ND2LcAEILcRd71SyARteLE35rs3Ub500056QbXxYD");
 
 
@@ -36,7 +35,6 @@ app.use(cors())
 
 
 //LOCAL
-app.use(cors());
 
 app.use(routes);
 

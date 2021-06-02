@@ -10,6 +10,5 @@ router.use('./cart', cartRoutes);
 router.use('./plant', plantRoutes);
 router.use('./search', plantSearchRoutes);
 router.use('./inventory', inventoryRoutes);
-router.use('./order', orderRoutes);
 
 module.exports = router;
