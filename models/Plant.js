@@ -15,10 +15,10 @@ Plant.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    // image: {
-    //     type: DataTypes.STRING,
-    //     allowNull: true
-    // },
+    image_file: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     price: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
@@ -41,13 +41,13 @@ Plant.init(
     },
     // Store a reference of the `id` of inventory this plant belongs to
     inventory_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'inventory',
-          key: 'id',
-        },
-    },
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'inventory',
+        key: 'id',
+      },
+  },
   },
   {
     sequelize,

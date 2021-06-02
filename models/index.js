@@ -23,14 +23,13 @@ Inventory.belongsTo(User, {
   foreignKey: 'user_id'
 });
 
-Plant.belongsTo(Inventory)
-// , {
-//   foreignKey: 'inventory_id',
-//   onDelete: 'CASCADE',
-// });
-
 Inventory.hasMany(Plant, {
   foreignKey: 'inventory_id',
+});
+
+Plant.belongsTo(Inventory, {
+  foreignKey: 'inventory_id',
+  onDelete: 'CASCADE',
 });
 
 Plant.belongsToMany(Tag, {
