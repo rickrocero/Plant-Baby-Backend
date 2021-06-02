@@ -9,7 +9,7 @@ cartRoutes = require('../routes/api/cartRoutes')
 router.get('/', function(req, res) {
     res.send("hello!")
 })
-router.use('/api', apiRoutes);
+// router.use('/api', apiRoutes);
 router.use(userRoutes);
 router.use(plantRoutes);
 router.use(plantSearchRoutes);
