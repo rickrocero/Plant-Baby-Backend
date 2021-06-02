@@ -1,8 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const routes = require('./routes');
+const cors = require('cors');
 const path = require('path');
-const cors = require("cors")
 const stripe = require("stripe")("sk_test_51IsMthAJVOAaFk842SSuVfJMKc4aodNbzrQ71oapQB8xO0X6TUs4wceH7ND2LcAEILcRd71SyARteLE35rs3Ub500056QbXxYD");
 
 
@@ -31,10 +31,10 @@ app.use(session(sess))
 app.use(express.json({limit:'50mb'}));
 app.use(express.urlencoded({ limit:'50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 
 
 //LOCAL
-app.use(cors());
 
 //deployed
 // app.use(cors({origin:["deployed front end https"]}));
