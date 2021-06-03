@@ -88,6 +88,19 @@ router.get("/user/:id", tokenAuth, async (req,res)=>{
   }
 });
 
+router.get("/profile",tokenAuth,(req,res)=>{
+  User.findOne({
+      where:{
+          id:req.user.id
+      },
+  }).then(userData=>{
+      return res.json(userData)
+  }).catch(err=>{
+      console.log(err);
+      return res.status(500).json({message:"error",err})
+  })
+})
+
 //WORKING
 // find all users
 // localhost:3001/auth/users

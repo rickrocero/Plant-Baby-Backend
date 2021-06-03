@@ -21,7 +21,7 @@ Plant.init(
     },
     price: {
         type: DataTypes.DECIMAL(10,2),
-        allowNull: false
+        allowNull: true
     },
     description: {
         type: DataTypes.STRING,
@@ -29,15 +29,15 @@ Plant.init(
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     is_indoor: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
     },
     for_sale: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     // Store a reference of the `id` of inventory this plant belongs to
     inventory_id: {
