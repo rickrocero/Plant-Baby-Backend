@@ -7,7 +7,7 @@ const { Plant, PlantTag, Tag } = require("../../models");
 router.post("/", (req, res) => {
   const files = [req.body.base64];
   const data = {
-    api_key: "7Q66uWKTVfiV3Aywgf0wy4Aq6q5ve8J0iDudbHyuDmnLbLhFVi",
+    api_key: "v9hOqs7l7S5qzQyo2pM2uWt5BT1lPmEsixh6la6UaFCCfuVG4j",
     images: files,
     modifiers: ["crops_fast", "similar_images"],
     plant_language: "en",
