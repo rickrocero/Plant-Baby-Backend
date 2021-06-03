@@ -12,6 +12,7 @@ router.post('/', tokenAuth, async (req, res) => {
       res.status(200).json(newPlant);
   
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
 });
