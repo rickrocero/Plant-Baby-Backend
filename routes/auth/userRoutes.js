@@ -17,6 +17,20 @@ router.post("/signup", (req, res) => {
     password: req.body.password,
   })
     .then((newUser) => {
+
+       // create default inventory
+      defaultInventory =
+        {
+            name: `${newUser.dataValues.first_name}'s Greenhouse`,
+            user_id: newUser.dataValues.id
+        }
+
+      Inventory.create(defaultInventory).then((res) => {
+        console.log(res);
+      });
+
+      res.status(200).json(newUser);
+
       const token = jwt.sign({
         first_name: newUser.first_name,
         last_name: newUser.last_name,
