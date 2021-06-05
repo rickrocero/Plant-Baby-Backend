@@ -4,17 +4,6 @@ const tokenAuth = require('../../middleware/tokenAuth')
 const { Inventory, Plant, User} = require('../../models');
 
 //WORKING
-// find all plants
-// localhost:3001/api/plant/allplants
-router.get('/allplants', tokenAuth, (req, res) => {
-    Plant.findAll().then(plants=> {
-        res.json(plants)
-    }).catch(err=> {
-        res.status(500).json({ message:"help", err })
-    })
-});
-
-//WORKING
 // CREATE a plant
 // localhost:3001/api/plant
 router.post('/', tokenAuth, async (req, res) => {
@@ -92,6 +81,15 @@ router.delete('/:id', tokenAuth, async (req, res) => {
   }  
 });
 
-
+//WORKING
+// find all plants
+// localhost:3001/api/plant/allplants
+router.get('/plantsall', tokenAuth, (req, res) => {
+    Plant.findAll().then(plants=> {
+        res.json(plants)
+    }).catch(err=> {
+        res.status(500).json({ message:"error", err })
+    })
+});
 
 module.exports = router; 
