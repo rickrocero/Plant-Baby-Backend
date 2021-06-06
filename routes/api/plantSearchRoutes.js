@@ -27,11 +27,10 @@ router.post("/", (req, res) => {
       console.log("=================================");
       console.log("Success: ", results.data);
       console.log("=================================");
-     res.json({dataRes: results.data})
-    }) 
+      res.json({ dataRes: results.data });
+    })
     .catch((error) => {
       console.error("Error: ", error);
-      
     });
 });
 
