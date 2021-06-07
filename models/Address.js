@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 
-class Plant extends Model {}
+class Address extends Model {}
 
-Plant.init(
+Address.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,40 +11,31 @@ Plant.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    type: {
+    street_1: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    image_file: {
+    street_2: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.TEXT,
+    city: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    quantity: {
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    zip: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
-    is_indoor: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
-    for_sale: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
-    // Store a reference of the `id` of inventory this plant belongs to
-    inventory_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "inventory",
+        model: "user",
         key: "id",
       },
     },
@@ -54,8 +45,8 @@ Plant.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: "plant",
+    modelName: "address",
   }
 );
 
-module.exports = Plant;
+module.exports = Address;
